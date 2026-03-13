@@ -1,5 +1,19 @@
-.idea/
-target/
-*.log
+# Compiled class files
 *.class
+
+# Other common ignores for Java
+*.jar
+*.war
+*.ear
+*.log
+*.tmp
+*.bak
+
+# IDE files
+.vscode/
+.idea/
 *.iml
+
+# OS files
+.DS_Store
+Thumbs.db

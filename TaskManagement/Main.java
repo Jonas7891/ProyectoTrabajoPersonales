@@ -85,7 +85,7 @@ public class Main {
             System.out.print("Elige una opción: ");
 
             int opcion = scanner.nextInt();
-            scanner.nextLine();  // Limpiar el buffer del scanner
+            scanner.nextLine(); // Limpiar el buffer del scanner
 
             switch (opcion) {
                 case 1:
@@ -96,7 +96,8 @@ public class Main {
                     String descripcion = scanner.nextLine();
                     System.out.print("Ingrese la fecha de vencimiento (YYYY-MM-DD): ");
                     String fecha = scanner.nextLine();
-                    Task nuevaTarea = new Task(manager.listTasks().size() + 1, titulo, descripcion, LocalDate.parse(fecha));
+                    Task nuevaTarea = new Task(manager.listTasks().size() + 1, titulo, descripcion,
+                            LocalDate.parse(fecha));
                     CreateTaskCommand crearTarea = new CreateTaskCommand(manager, nuevaTarea);
                     invoker.executeCommand(crearTarea);
                     break;
@@ -119,30 +120,17 @@ public class Main {
 
                 case 4:
                     // Listar tareas
-                    System.out.println("\n--- Tareas ---");
-                    for (Task t : manager.listTasks()) {
-                        System.out.println("ID: " + t.getId() + ", Título: " + t.getTitle());
-                    }
+                    invoker.executeCommand(new ListTasksCommand(manager));
                     break;
 
                 case 5:
                     // Ver tareas pendientes
-                    System.out.println("\n--- Tareas Pendientes ---");
-                    Iterator pendienteIterator = new PendingTaskIterator(manager.listTasks());
-                    while (pendienteIterator.hasNext()) {
-                        Task t = pendienteIterator.next();
-                        System.out.println("ID: " + t.getId() + ", Título: " + t.getTitle());
-                    }
+                    invoker.executeCommand(new ListPendingTasksCommand(manager));
                     break;
 
                 case 6:
                     // Ver tareas completadas
-                    System.out.println("\n--- Tareas Completadas ---");
-                    Iterator completadaIterator = new CompletedTaskIterator(manager.listTasks());
-                    while (completadaIterator.hasNext()) {
-                        Task t = completadaIterator.next();
-                        System.out.println("ID: " + t.getId() + ", Título: " + t.getTitle());
-                    }
+                    invoker.executeCommand(new ListCompletedTasksCommand(manager));
                     break;
 
                 case 7:

@@ -43,11 +43,11 @@ public class TaskManager {
         }
     }
 
-        // Completar tarea en el TaskManager
+    // Completar tarea en el TaskManager
     public void completeTask(int taskId) {
         Task task = findTask(taskId);
         if (task != null) {
-            task.completeTask();  // Llamamos al método de Task para completar la tarea
+            task.completeTask(); // Llamamos al método de Task para completar la tarea
         }
     }
 
@@ -55,8 +55,8 @@ public class TaskManager {
     public void editTask(int taskId, String newTitle, String newDescription) {
         Task task = findTask(taskId);
         if (task != null) {
-            task.setTitle(newTitle);  // Modificar el título
-            task.setDescription(newDescription);  // Modificar la descripción
+            task.setTitle(newTitle); // Modificar el título
+            task.setDescription(newDescription); // Modificar la descripción
             System.out.println("Tarea editada: " + task.getTitle());
         }
     }
@@ -70,7 +70,6 @@ public class TaskManager {
         }
         return null;
     }
-
 
     public void addUser(User user) {
         users.add(user);
@@ -88,10 +87,24 @@ public class TaskManager {
         return history;
     }
 
-
     // Métodos para listar tareas
     public List<Task> listTasks() {
         return tasks;
+    }
+
+    // Método para obtener iterador de todas las tareas
+    public Iterator getAllTaskIterator() {
+        return new AllTaskIterator(tasks);
+    }
+
+    // Método para obtener iterador de tareas pendientes
+    public Iterator getPendingTaskIterator() {
+        return new PendingTaskIterator(tasks);
+    }
+
+    // Método para obtener iterador de tareas completadas
+    public Iterator getCompletedTaskIterator() {
+        return new CompletedTaskIterator(tasks);
     }
 
     public List<Workspace> getWorkspaces() {
