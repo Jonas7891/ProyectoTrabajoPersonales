@@ -1,0 +1,153 @@
+@startuml DC-TareasPersonales
+
+class TaskManager {
+  - instance : TaskManager
+  - tasks : List<Task>
+  - users : List<User>
+  - workspaces : List<Workspace>
+  - history : List<String>
+
+  + getInstance() : TaskManager
+  + addUserTask(Task)
+  + removeTask(Task)
+  + editTask(taskId, title, description, dueDate)
+  + completeTask(taskId)
+  + getTasks() : List<Task>
+  + getCompletedTasks() : Iterator
+  + getPendingTasks() : Iterator
+  + addToHistory(String)
+  + getHistory() : List<String>
+}
+
+class User {
+  - id : int
+  - username : String
+  - password : String
+
+  + register(username,password)
+  + login(username,password)
+  + logout()
+}
+
+class Workspace {
+  - id : int
+  - name : String
+  - tasks : List<Task>
+
+  + createWorkspace(name)
+  + editWorkspace(name)
+  + deleteWorkspace()
+  + addTask(Task)
+  + removeTask(Task)
+  + getTasks() : List<Task>
+}
+
+class Task {
+  - id : int
+  - title : String
+  - description : String
+  - completed : boolean
+  - dueDate : Date
+  - subTasks : List<SubTask>
+
+  + addSubTask(SubTask)
+  + removeSubTask(SubTask)
+  + completeTask()
+  + editTask(title,description,dueDate)
+  + isCompleted() : boolean
+}
+
+class SubTask {
+  - id : int
+  - title : String
+  - completed : boolean
+
+  + completeSubTask()
+  + isCompleted() : boolean
+}
+
+class Session {
+  - activeUser : User
+
+  + startSession(user)
+  + endSession()
+  + getActiveUser() : User
+}
+
+interface Iterator {
+  + hasNext() : boolean
+  + next() : Task
+}
+
+class PendingTaskIterator {
+  - tasks : List<Task>
+
+  + hasNext() : boolean
+  + next() : Task
+}
+
+class CompletedTaskIterator {
+  - tasks : List<Task>
+  - position : int
+
+  + hasNext() : boolean
+  + next() : Task
+}
+
+interface Command {
+  + execute()
+}
+
+class CreateTaskCommand {
+  - manager : TaskManager
+  - task : Task
+
+  + execute()
+}
+
+class CompleteTaskCommand {
+  - manager : TaskManager
+  - taskId : int
+
+  + execute()
+}
+
+class DeleteTaskCommand {
+  - manager : TaskManager
+  - taskId : int
+
+  + execute()
+}
+
+class EditTaskCommand {
+  - manager : TaskManager
+  - taskId : int
+  - description : String
+  - dueDate : Date
+
+  + execute()
+}
+
+class CommandInvoker {
+  - history : List<Command>
+
+  + executeCommand(Command)
+  + showHistory()
+}
+
+TaskManager --> User
+TaskManager --> Workspace
+Workspace --> Task
+Task --> SubTask
+
+PendingTaskIterator ..|> Iterator
+CompletedTaskIterator ..|> Iterator
+
+CreateTaskCommand ..|> Command
+CompleteTaskCommand ..|> Command
+DeleteTaskCommand ..|> Command
+EditTaskCommand ..|> Command
+
+CommandInvoker --> Command
+
+@enduml
